@@ -1,4 +1,4 @@
-//todo:待升级为2维
+//todo:待升级为2维;尽量使用变量+方法的方式：用方法改变变量，用变量推动游戏进程。
 
 package game;
 
@@ -7,28 +7,10 @@ import java.util.Scanner;
 public class mygame {
     int start = (int) (Math.random() * 100);
     int hitted_count=0;
-    private int[] 船体 = new int[100];
+    private int[] 船体;
 
-    public void init船体(int p) {
-        for (int x = 0; x < 100; x += 1) {
-            set船体(x, 0);
-        }
-
-        if (p == 0) {
-            set船体(p, 1);
-            set船体(p + 1, 1);
-            set船体(p + 2, 1);
-        }
-        if (p == 6) {
-            set船体(p, 1);
-            set船体(p - 1, 1);
-            set船体(p - 2, 1);
-        } else {
-            set船体(p, 1);
-            set船体(p - 1, 1);
-            set船体(p + 1, 1);
-        }
-
+    public void init船体(int[] init) {
+        船体 = init;
     }
 
     public void set船体(int x, int y) {
@@ -78,15 +60,15 @@ class mygametestdriver{
     public static void main(String[] args){
         mygame gamestart=new mygame();
 
-        gamestart.init船体(gamestart.start);
+//        gamestart.init船体(gamestart.start);
 
         player pl=new player();
         int lauch_counter=6;
 
-        while (true) {
-            if ((lauch_counter > 0) & (gamestart.hitted_count < 3)) {
+        while (lauch_counter > 0) {
+            if (gamestart.hitted_count < 3) {
                 System.out.println(String.format("*******\n请发射鱼雷（注意！你的鱼雷库存只剩%d颗了！！）对准敌船的疑似弹药库[0到100]:  \n*******", lauch_counter));
-                lauch_counter -= 1;
+                lauch_counter--;
                 int plguessshippart = pl.plinput.nextInt();
                 int plguessing = pl.plguess(plguessshippart);
                 gamestart.test(plguessing);
@@ -94,11 +76,8 @@ class mygametestdriver{
                 System.out.println("*******\n恭喜！敌船已被击沉!\nimpossible mission completed!\n今晚吃鸡！");
                 System.out.println("但你总共浪费了：  " + (3 - lauch_counter) + "   颗鱼雷！\n*******");
                 break;
-            } else{
-                System.out.println("*******\n鱼雷用尽，possible mission failed!\n你被将军executed.\n*******");
-                break;
             }
         }
-
+        System.out.println("*******\n鱼雷用尽，possible mission failed!\n你被将军executed.\n*******");
     }
 }
