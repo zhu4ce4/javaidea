@@ -1,4 +1,4 @@
-//todo:1、待升级为2维，2、若未击中加入偏左或偏右的提示；3、每次复活重置油箱位置，但保留剩余的鱼雷数量，不得重置;尽量使用变量+方法的方式：用方法改变变量，用变量推动游戏进程。
+//todo:1、待升级为2维，2、若未击中加入偏左或偏右的提示；3、每次复活重置油箱位置，但保留剩余的鱼雷数量，不得重置;尽量使用面向对象：变量+方法的方式：用方法改变变量，用变量推动游戏进程。
 
 package game;
 import java.util.ArrayList;
@@ -6,7 +6,10 @@ import java.util.Scanner;
 
 class 游戏引擎 {
     int 船舱数 = 10;
-    int 随机油箱 = (int) (Math.random() * 船舱数);
+    int 随机油箱1 = (int) (Math.random() * 船舱数);   //todo:存在可能会重复数的bug
+    int 随机油箱2 = (int) (Math.random() * 船舱数);
+    int 随机油箱3 = (int) (Math.random() * 船舱数);
+
     int[] items = new int[2];
     int 被击中数 = 0;
     int 油箱数 = 3;
@@ -14,7 +17,6 @@ class 游戏引擎 {
 
     public void 初始化敌船(int p) {
         油箱.add(p);
-        System.out.println(油箱);
     }
 
     public int[] 检查油箱(int x) {
@@ -26,66 +28,24 @@ class 游戏引擎 {
         } else if (油箱.contains(x)) {
             被击中数++;
             油箱数--;
-            油箱.remove(y);
-//            if (!油箱.isEmpty()) {
-//            if ((!油箱.isEmpty())&&(pl.鱼雷%6==0)) {
+            油箱.remove(y);   //利用上面的转换，否则会出错！
             System.out.println(String.format("敌船油箱: " + x + " " + "被击中！还剩%d个油箱未摧毁！come on!", (油箱数)));
             }
-//            else if(油箱.isEmpty()){
-//            }
 
         items[0] = 被击中数;
         items[1] = 油箱数;
         return items;
     }
-}
 
-
-class player{
-    int 鱼雷 = 18;
-//    int fire_count=0;
-
-    //        int[] fire(){
-//        Scanner plinput=new Scanner(System.in);
-//        int target= plinput.nextInt();
-//        鱼雷--;
-//        items[0]=鱼雷;
-//        items[1]=target;
-    int fire() {
-        Scanner plinput = new Scanner(System.in);
-        int target = plinput.nextInt();
-//        fire_count++;
-//        if(鱼雷%6==0){
-//            System.out.println();
-        return target;
-    }
-}
-
-
-
-class 开始游戏 {
-    public static void main(String[] args) {
-        游戏引擎 新游戏 = new 游戏引擎();
-
-
-
-        新游戏.初始化敌船(0);   //todo:待修改自动随机赋值
-        新游戏.初始化敌船(1);
-        新游戏.初始化敌船(2);
-//        新游戏.初始化敌船(新游戏.随机油箱);
-
-        System.out.println("接上峰命令:对敌船进行全力攻击！情报显示：敌船3个油箱位于船舱的0到10舱位间，需将3个油箱全击中才能击沉敌船,上帝保佑你!");
-
+    public void endgame() {
         player pl = new player();
         int yulei_left = pl.鱼雷;
         System.out.println(String.format("遗憾的是：我们的鱼雷库存仅剩余%d颗了！且用且珍惜吧！", yulei_left));
-
         while (yulei_left > 0) {
             System.out.println(String.format("*******\n请发射鱼雷（注意！你的鱼雷库存只剩%d颗了！！）对准敌船的船舱[0-10]:  \n*******", yulei_left));
             int target = pl.fire();
-//            int yulei_left=items[0];
             yulei_left--;
-            int[] itemss = 新游戏.检查油箱(target);
+            int[] itemss = 检查油箱(target);
             int youxiang_left = itemss[1];
 //            int hitted_count = items[1];
             if ((yulei_left == 12) && (youxiang_left) > 0) {
@@ -107,16 +67,25 @@ class 开始游戏 {
 }
 
 
-//
-//                int plguessshippart = pl.plinput.nextInt();
-//                int plguessing = pl.plguess(plguessshippart);
-//                新游戏.test(plguessing);
-//            } else if (新游戏.被击中数 == 3) {
-//                System.out.println("*******\n恭喜！敌船已被击沉!\nimpossible mission completed!\n今晚吃鸡！");
-//                System.out.println("但你总共浪费了：  " + (3 - lauch_counter) + "   颗鱼雷！\n*******");
-//                break;
-//            }
-//        }
-//        System.out.println("*******\n鱼雷用尽，possible mission failed!\n你被将军executed.\n*******");
-//    }
-//}
+class player{
+    int 鱼雷 = 18;    //每用6颗鱼雷死一条命；共3条命
+    int fire() {
+        Scanner plinput = new Scanner(System.in);
+        int target = plinput.nextInt();
+        return target;
+    }
+}
+
+
+class 开始游戏 {
+    public static void main(String[] args) {
+        游戏引擎 新游戏 = new 游戏引擎();
+
+        新游戏.初始化敌船(新游戏.随机油箱1);   //todo:待修改简化
+        新游戏.初始化敌船(新游戏.随机油箱2);
+        新游戏.初始化敌船(新游戏.随机油箱3);
+
+        System.out.println("接上峰命令:对敌船进行全力攻击！情报显示：敌船3个油箱位于船舱的0到10舱位间，需将3个油箱全击中才能击沉敌船,上帝保佑你!");
+        新游戏.endgame();
+    }
+}
