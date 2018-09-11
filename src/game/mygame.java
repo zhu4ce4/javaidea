@@ -19,7 +19,7 @@ class 游戏引擎 {
         油箱.add(p);
     }
 
-    public int[] 检查油箱(int x) {
+    private int[] 检查油箱(int x) {
         int y = 油箱.indexOf(x);        //在此做了一个转换，否则会出错！
         if ((x < 0) || (x > 船舱数)) {
             System.out.println("鱼雷偏离敌船,更别提油箱了，请调整你的射击角度！");
