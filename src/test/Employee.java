@@ -16,13 +16,13 @@ import static java.lang.System.out;
 //}
 
 
-public class Employee {
+class Employeess {
     private static int nextId = 1;
     private String name;
     private double salary;
     private int id;
 
-    public Employee(String n, double s) {
+    public Employeess(String n, double s) {
         name = n;
         salary = s;
         id = nextId;
@@ -38,10 +38,10 @@ public class Employee {
     }
 
     public static void main(String[] args) {
-        Employee a = new Employee("a", 1);
-        Employee b = new Employee("b", 2);
+        Employeess a = new Employeess("a", 1);
+        Employeess b = new Employeess("b", 2);
 
-        Employee temp = a;
+        Employeess temp = a;
         a = b;
         b = temp;
         out.println(a.getName() + "   " + a.getId() + "   " + a.getSalary());
