@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.lang.System.err;
 import static java.lang.System.out;
 
 //todo:输入一个日期，判断是否合法，2018-08-08；20180808；2018/08/08；其他不合法；注意闰年2--29，135781012--31，其他不合法；2种方法：1、调用构造器先构造日期；2、输入一个string后解析为日期；
@@ -114,7 +115,7 @@ class RiQi {
     }
 
     public void errPrintExit(String errTh) {
-        out.printf("%s输入有误!\n", errTh);
+        err.printf("%s输入有误!\n", errTh);
         System.exit(999);
     }
 
