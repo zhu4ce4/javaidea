@@ -13,7 +13,6 @@ public class RiQiTest {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String[] input = new String[3];
-        out.println("请输入您的出生年份:");
         input[0] = in.next();
         out.println("请输入您的出生月份:");
         input[1] = in.next();
@@ -111,11 +110,15 @@ class RiQi {
         this.yearTest(this.getYear());
         this.monthTest(this.getMonth());
         this.dayTest(this.getDay());
-        out.println(this.getBirthday());
+        printAny(this.getBirthday());
     }
 
     public void errPrintExit(String errTh) {
         out.printf("%s输入有误!\n", errTh);
         System.exit(999);
+    }
+
+    public void printAny(Object ob) {
+        System.out.println(ob);
     }
 }
