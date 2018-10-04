@@ -14,6 +14,7 @@ public class RiQiTest {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String[] input = new String[3];
+        out.println("请输入您的出生年份:");
         input[0] = in.next();
         out.println("请输入您的出生月份:");
         input[1] = in.next();
@@ -28,6 +29,8 @@ class RiQi {
     private String year;
     private String month;
     private String day;
+    private String errs = "您输入的：";
+    private boolean noInputErr = true;
 
     public RiQi(String[] riqi_string) {
         year = riqi_string[0];
@@ -47,8 +50,17 @@ class RiQi {
         return day;
     }
 
-    public String getBirthday() {
-        return year + month + day;
+    public void getBirthday() {
+        if (noInputErr) {
+            int smonth = LocalDate.now().getMonthValue();
+            int sday = LocalDate.now().getDayOfMonth();
+            printAny("您的生日为：" + year + month + day);
+            if (smonth == Integer.parseInt(month) && sday == Integer.parseInt(day)) {
+                printAny("今天是您的生日！祝您生日快乐！");
+            }
+        } else {
+            err.println(errs + "有误！请仔细检查后重新输入！");
+        }
     }
 
     public void yearTest(String syear) {
@@ -57,9 +69,9 @@ class RiQi {
         LocalDate now = LocalDate.now();
 
         if (!m.find()) {
-            errPrintExit("年份");
+            errAdd("年份");
         } else if (Integer.parseInt(m.group()) > now.getYear()) {
-            errPrintExit("年份");
+            errAdd("年份");
         }
         year = m.group();
     }
@@ -68,11 +80,10 @@ class RiQi {
         Pattern p = Pattern.compile("^\\d{1,2}$");
         Matcher m = p.matcher(smonth);
         if (!m.find()) {
-            errPrintExit("月份");
+            errAdd("月份");
         } else if (Integer.parseInt(m.group()) > 12 || Integer.parseInt(m.group()) < 1) {
-            errPrintExit("月份");
-        }
-        if (m.group().length() == 1) {
+            errAdd("月份");
+        } else if (m.group().length() == 1) {
             month = "0" + m.group();
         } else {
             month = m.group();
@@ -86,17 +97,16 @@ class RiQi {
         String[] s = {"02", "04", "06", "09", "11"};
 
         if (!m.find()) {
-            errPrintExit("日子");
-        } else if (this.month.equals("02") && chickDay(Integer.parseInt(this.year)) && Integer.parseInt(sday) > 29) {
-            errPrintExit("日子");
-        } else if (this.month.equals("02") && !chickDay(Integer.parseInt(this.year)) && Integer.parseInt(sday) > 28) {
-            errPrintExit("日子");
-        } else if (Arrays.asList(s).contains(this.month) && Integer.parseInt(sday) > 30) {
-            errPrintExit("日子");
+            errAdd("日子");
+        } else if (month.equals("02") && chickDay(Integer.parseInt(year)) && Integer.parseInt(sday) > 29) {
+            errAdd("日子");
+        } else if (month.equals("02") && !chickDay(Integer.parseInt(year)) && Integer.parseInt(sday) > 28) {
+            errAdd("日子");
+        } else if (Arrays.asList(s).contains(month) && Integer.parseInt(sday) > 30) {
+            errAdd("日子");
         } else if (Integer.parseInt(sday) > 31) {
-            errPrintExit("日子");
-        }
-        if (m.group().length() == 1) {
+            errAdd("日子");
+        } else if (m.group().length() == 1) {
             day = "0" + sday;
         } else {
             day = sday;
@@ -107,16 +117,23 @@ class RiQi {
         return (iPara % 100 != 0 && iPara % 4 == 0) || iPara % 400 == 0;
     }
 
-    public void riqiTestPrint(RiQi this) {
-        this.yearTest(this.getYear());
-        this.monthTest(this.getMonth());
-        this.dayTest(this.getDay());
-        printAny(this.getBirthday());
+    public void riqiTestPrint() {
+//        this.yearTest(this.getYear());
+//        this.monthTest(this.getMonth());
+//        this.dayTest(this.getDay());
+//        getBirthday();
+
+        yearTest(getYear());
+        monthTest(getMonth());
+        dayTest(getDay());
+        getBirthday();
     }
 
-    public void errPrintExit(String errTh) {
-        err.printf("%s输入有误!\n", errTh);
-        System.exit(999);
+    public void errAdd(String errTh) {
+        errs += errTh + " ";
+        noInputErr = false;
+//        System.exit(999);
+//        return;
     }
 
     public void printAny(Object ob) {
