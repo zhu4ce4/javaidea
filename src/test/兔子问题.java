@@ -17,6 +17,33 @@ class Tuzi {
         totalNumOfTuzi++;
     }
 
+    public static int getMonthNow() {
+        return monthNow;
+    }
+
+    public static int getTotalNumOfTuzi() {
+        return totalNumOfTuzi;
+    }
+
+    public static void monthPlus() {
+        monthNow++;
+    }
+
+    public Tuzi[] giveBirthOrNot() {
+        Tuzi[] tuziwoTemp = new Tuzi[2];
+        if (monthNow - birthMonthOfTuzi > 2) {
+            tuziwoTemp[0] = new Tuzi();
+            tuziwoTemp[1] = new Tuzi();
+            return tuziwoTemp;
+        } else {
+            tuziwoTemp[0] = null;
+            tuziwoTemp[1] = null;
+            return tuziwoTemp;
+        }
+    }
+}
+
+class TuZiTest {
     public static void main(String[] args) {
 //        ArrayList<Tuzi> tuziwo=new ArrayList<>(); //todo:线程问题导致失败？？https://www.jianshu.com/p/c5b52927a61a
         List<Tuzi> tuziwo = new CopyOnWriteArrayList<>();
@@ -37,23 +64,9 @@ class Tuzi {
                     }
                 }
             }
-            System.out.printf("现在是第 %d 个月,现在的兔子总数是: %d\n", monthNow, totalNumOfTuzi);
-            monthNow++;
+            System.out.printf("现在是第 %d 个月,现在的兔子总数是: %d\n", Tuzi.getMonthNow(), Tuzi.getTotalNumOfTuzi());
+            Tuzi.monthPlus();
             i--;
         } while (i > 0);
     }
-
-    public Tuzi[] giveBirthOrNot() {
-        Tuzi[] tuziwoTemp = new Tuzi[2];
-        if (monthNow - birthMonthOfTuzi > 2) {
-            tuziwoTemp[0] = new Tuzi();
-            tuziwoTemp[1] = new Tuzi();
-            return tuziwoTemp;
-        } else {
-            tuziwoTemp[0] = null;
-            tuziwoTemp[1] = null;
-            return tuziwoTemp;
-        }
-    }
 }
-
