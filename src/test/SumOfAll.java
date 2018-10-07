@@ -19,7 +19,7 @@ public class SumOfAll {
         int everyNum = baseNum;
 
         for (int i = 1; i < times; i++) {       //逻辑理清楚再写代码！
-            everyNum += baseNum * ((int) Math.pow(10, i));
+            everyNum += baseNum * Math.pow(10, i);
             countAll += everyNum;
         }
         System.out.printf("从%d一直加到%d个%d的和是%d \n", baseNum, times, baseNum, countAll);
